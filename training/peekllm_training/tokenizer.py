@@ -88,10 +88,7 @@ class SimpleTokenizerV2:
 
     def encode(self, text: str) -> list[int]:
         tokens = tokenize(text)
-        tokens = [
-            token if token in self.str_to_int else self.UNKNOWN_TOKEN
-            for token in tokens
-        ]
+        tokens = [token if token in self.str_to_int else self.UNKNOWN_TOKEN for token in tokens]
         return [self.str_to_int[token] for token in tokens]
 
     def decode(self, ids: list[int]) -> str:

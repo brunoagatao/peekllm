@@ -11,9 +11,7 @@ from peekllm_training.tokenizer import (
     tokenize,
 )
 
-VERDICT_PATH = (
-    Path(__file__).parent.parent / "peekllm_training" / "data" / "the-verdict.txt"
-)
+VERDICT_PATH = Path(__file__).parent.parent / "peekllm_training" / "data" / "the-verdict.txt"
 
 
 @pytest.fixture(scope="module")
@@ -76,9 +74,7 @@ class TestBuildVocab:
         vocab = build_vocab("the the the cat cat sat")
         assert len(vocab) == len(set(["the", "cat", "sat"]))
 
-    def test_on_verdict_text_matches_expected_scale(
-        self, verdict_vocab: dict[str, int]
-    ) -> None:
+    def test_on_verdict_text_matches_expected_scale(self, verdict_vocab: dict[str, int]) -> None:
         assert 1000 <= len(verdict_vocab) <= 1300
 
 
@@ -113,9 +109,7 @@ class TestSimpleTokenizerV1:
         # token must still appear, in order.
         assert tokenize(decoded) == tokenize(sample)
 
-    def test_str_to_int_and_int_to_str_are_inverses(
-        self, verdict_vocab: dict[str, int]
-    ) -> None:
+    def test_str_to_int_and_int_to_str_are_inverses(self, verdict_vocab: dict[str, int]) -> None:
         tokenizer = SimpleTokenizerV1(verdict_vocab)
         for token, idx in tokenizer.str_to_int.items():
             assert tokenizer.int_to_str[idx] == token
