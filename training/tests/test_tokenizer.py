@@ -1,5 +1,3 @@
-"""Tests for the from-scratch tokenizer (Chapter 2)."""
-
 from pathlib import Path
 
 import pytest

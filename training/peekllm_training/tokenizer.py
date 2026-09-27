@@ -75,9 +75,6 @@ class SimpleTokenizerV2:
     END_OF_TEXT_TOKEN: ClassVar[str] = "<|endoftext|>"
 
     def __post_init__(self) -> None:
-        # Copy so we don't mutate a vocab dict the caller might still hold a
-        # reference to (SimpleTokenizerV1 aliases it directly; this class
-        # adds entries, so it needs its own copy).
         extended_vocab = dict(self.str_to_int)
         for special_token in (self.UNKNOWN_TOKEN, self.END_OF_TEXT_TOKEN):
             if special_token not in extended_vocab:
