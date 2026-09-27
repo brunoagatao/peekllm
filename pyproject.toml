@@ -1,0 +1,23 @@
+[project]
+name = "peekllm-training"
+version = "0.1.0"
+description = "JAX implementation of a small GPT-style model for the peekllm playground"
+readme = "README.md"
+authors = [
+    { name = "Bruno Agatao", email = "bagatao@anaconda.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "jax>=0.11.2",
+    "jaxlib>=0.11.2",
+]
+
+[project.scripts]
+peekllm-training = "peekllm_training:main"
+
+[build-system]
+requires = ["uv_build>=0.12.19,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = "training"

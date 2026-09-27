@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Env / secrets
+.env
+.env.*
+
+# Data & model artifacts (large, not for git)
+training/data/
+training/checkpoints/
+*.onnx
+*.safetensors
+*.npz
+
+# OS
+.DS_Store
+
+# Node / frontend (for later web/ setup)
+node_modules/
+dist/
+build/
