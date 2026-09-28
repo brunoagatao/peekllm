@@ -49,8 +49,6 @@ class TestTokenize:
         assert all(token and not token.isspace() for token in tokens)
 
     def test_on_verdict_text_matches_expected_scale(self, verdict_text: str) -> None:
-        # Sanity check against the book's reported token count for this
-        # exact text (allowing a little slack for punctuation edge cases).
         tokens = tokenize(verdict_text)
         assert 4500 <= len(tokens) <= 4800
 
@@ -102,9 +100,6 @@ class TestSimpleTokenizerV1:
         sample = verdict_text[:200]
         ids = tokenizer.encode(sample)
         decoded = tokenizer.decode(ids)
-        # Not byte-identical (decode() always joins with single spaces and
-        # doesn't special-case "--"), but every original word/punctuation
-        # token must still appear, in order.
         assert tokenize(decoded) == tokenize(sample)
 
     def test_str_to_int_and_int_to_str_are_inverses(self, verdict_vocab: dict[str, int]) -> None:
@@ -138,7 +133,6 @@ class TestSimpleTokenizerV2:
     def test_encode_never_raises_on_unknown_tokens(self) -> None:
         vocab = build_vocab("Hello, world!")
         tokenizer = SimpleTokenizerV2(vocab)
-        # Should not raise, unlike SimpleTokenizerV1.
         tokenizer.encode("Completely unseen vocabulary appears here.")
 
     def test_encode_decode_round_trip_with_unknown_tokens(self) -> None:

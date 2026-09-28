@@ -37,7 +37,7 @@ class TestGPTDatasetFromText:
 
     def test_non_overlapping_windows_when_stride_equals_max_length(self) -> None:
         dataset = GPTDataset.from_text("abcdefgh", _WordTokenizer(), max_length=4, stride=4)
-        assert len(dataset) == 1  # only one full non-overlapping window fits
+        assert len(dataset) == 1
         input_ids, _ = dataset[0]
         assert [chr(c) for c in input_ids] == ["a", "b", "c", "d"]
 
@@ -45,12 +45,9 @@ class TestGPTDatasetFromText:
         dataset = GPTDataset.from_text("abcdefgh", _WordTokenizer(), max_length=4, stride=1)
         first_input, _ = dataset[0]
         second_input, _ = dataset[1]
-        # Windows overlap by max_length - stride = 3 tokens.
         np.testing.assert_array_equal(first_input[1:], second_input[:-1])
 
     def test_drops_trailing_text_shorter_than_a_full_window(self) -> None:
-        # 9 tokens, max_length=4, stride=4 -> windows start at 0 and 4; the
-        # trailing 1 token isn't enough for another full window.
         dataset = GPTDataset.from_text("abcdefghi", _WordTokenizer(), max_length=4, stride=4)
         assert len(dataset) == 2
 
@@ -78,7 +75,6 @@ class TestDataLoader:
         assert isinstance(inputs, jnp.ndarray)
 
     def test_drop_last_discards_a_partial_final_batch(self) -> None:
-        # 3 windows, batch_size=2 -> one full batch of 2, one partial of 1.
         dataset = GPTDataset.from_text("abcdefghijklmnop", _WordTokenizer(), max_length=4, stride=4)
         assert len(dataset) == 3
         loader = DataLoader(dataset, batch_size=2, shuffle=False, drop_last=True)
@@ -110,7 +106,6 @@ class TestDataLoader:
         loader = DataLoader(dataset, batch_size=1, shuffle=True, drop_last=False, seed=0)
         shuffled_inputs = {tuple(batch[0][0].tolist()) for batch in loader}
         original_inputs = {tuple(dataset[i][0].tolist()) for i in range(len(dataset))}
-        # Same set of windows, just (very likely) a different draw order.
         assert shuffled_inputs == original_inputs
 
     def test_reshuffles_on_each_new_iteration(self) -> None:
